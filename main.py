@@ -1,7 +1,7 @@
-from entry import *
-from exit import *
-from buscarMenorEnFila import buscarMenor
-from tratarArrepentimiento import tratarArrepentimiento
+from llegada import llegada
+from salida import salida
+from buscar_menor_en_fila import buscar_menor
+
 
 # Definición de variables
 
@@ -20,7 +20,32 @@ PTE = 0         # Promedio de tiempo de espera en cola en el subsistema i
 PTA = 0         # Promedio de tiempo de atención en el subsistema i
 PTO = 0         # Porcentaje de tiempo ocioso del subsistema i
 
-buscarMenor([5, 2, 1, 4, 1])
+buscar_menor([5, 2, 1, 4, 1])
 
-tratarArrepentimiento(3, 1, 1)
-# el arrpenetimiento devuelve un bool, que determinara si el cliente entra o no al sistema, si no entra hay que acumular el arrepentimiento en una var
+# Itera hasta que el tiempo de la simulación alcance el tiempo máximo establecido
+while T <= TF:
+    if TPLL <= TPS:
+        llegada(STP, TPLL, T, NS, N, STA, STO, CTO)
+    else:
+        salida()
+
+#--------------------------------------------------Generar informes--------------------------------------------------#
+
+# Promedio de permanencia en el subsistema
+PPS = STP / N
+
+# Promedio de espera en cola en el subsistema
+PTE = (STP - STA) / N
+
+# Promedio de atención en cola en el subsistema
+PTA = STA / N
+
+# Porcentaje de tiempo ocioso del sistema
+PTO = STO * 100 / T
+
+# Porcentaje de arrepentimiento
+#PA = A*100 / N
+
+
+
+

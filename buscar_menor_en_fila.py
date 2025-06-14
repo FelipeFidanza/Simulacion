@@ -1,4 +1,4 @@
-def buscarMenor(tps:list) -> list:
+def buscar_menor(tps:list) -> list:
     """
     1. Esta función recibe una lista de tiempos de proxima salida (TPS) y devuelve el menor tiempo
     2. Esta función recibe una lista de cantidad de personas por servidor (NS) y devuelve la de menor cantidad.
