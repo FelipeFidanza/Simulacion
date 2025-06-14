@@ -1,5 +1,6 @@
 from entry import *
 from exit import *
+from buscarMenorTps import buscarMenorTps
 
 # Definición de variables
 
@@ -17,5 +18,4 @@ PPS = 0         # Promedio de permanencia en el subsistema i
 PTE = 0         # Promedio de tiempo de espera en cola en el subsistema i
 PTA = 0         # Promedio de tiempo de atención en el subsistema i
 PTO = 0         # Porcentaje de tiempo ocioso del subsistema i
-
 
