@@ -11,6 +11,5 @@ def  tratarArrepentimiento(TPSk: int, T: int, tolerancia:int) -> bool:
         print(f"El cliente se arrepiente de esperar más de {tolerancia} segundos. Tiempo estimado de espera: {espera_estimada} segundos.")
     else:
         print(f"El cliente no se arrepiente. Tiempo estimado de espera: {espera_estimada} segundos.")
-
     
     return arrepentido
