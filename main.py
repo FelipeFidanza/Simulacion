@@ -1,6 +1,7 @@
 from entry import *
 from exit import *
-from buscarMenorTps import buscarMenorTps
+from buscarMenorEnFila import buscarMenor
+from tratarArrepentimiento import tratarArrepentimiento
 
 # Definición de variables
 
@@ -19,3 +20,7 @@ PTE = 0         # Promedio de tiempo de espera en cola en el subsistema i
 PTA = 0         # Promedio de tiempo de atención en el subsistema i
 PTO = 0         # Porcentaje de tiempo ocioso del subsistema i
 
+buscarMenor([5, 2, 1, 4, 1])
+
+tratarArrepentimiento(3, 1, 1)
+# el arrpenetimiento devuelve un bool, que determinara si el cliente entra o no al sistema, si no entra hay que acumular el arrepentimiento en una var
