@@ -1,6 +1,6 @@
 def  tratar_arrepentimiento(TPSk: int, T: int, tolerancia:int) -> bool:
     """
-    Esta función toma el tiempo del servidor con la menor proxima salida (TPSk), el tiempo actual (T), la tolerancia
+    Toma el tiempo del servidor con la menor proxima salida (TPSk), el tiempo actual (T), la tolerancia
     de espera (en segundos), y determina si el cliente se arrepentira o no.
     """
     espera_estimada = TPSk - T

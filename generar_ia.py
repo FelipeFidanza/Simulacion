@@ -1,5 +1,5 @@
 def generar_intervalos_entre_arribos():
     """
-    Esta función genera los intervalos entre arribos, teniendo en cuenta la función exponencial.
+    Esta función genera los intervalos entre arribos, teniendo en cuenta la INVERSA de la función exponencial.
     """
     pass
