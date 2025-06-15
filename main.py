@@ -25,11 +25,11 @@ PTO = [0] * C         # Porcentaje de tiempo ocioso del subsistema i
 
 # Itera hasta que el tiempo de la simulación alcance el tiempo máximo establecido
 while T <= TF:
-    TPSk = buscar_menor(TPS)  
-    if TPLL <= TPSk:
+    k = buscar_menor(TPS)  
+    if TPLL <= TPS[k]:
         llegada(STP, TPLL, T, NS, N, STA, STO, CTO)
     else:
-        salida(STP, TPSk, T, NS, CTO)
+        salida(STP, TPS, k, T, NS, STA, CTO)
 
 #--------------------------------------------------Generar informes--------------------------------------------------#
 
