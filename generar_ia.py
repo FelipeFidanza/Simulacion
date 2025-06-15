@@ -1,5 +1,10 @@
-def generar_intervalos_entre_arribos():
+import random
+import math
+
+def generar_intervalos_entre_arribos(lamda):
     """
     Esta función genera los intervalos entre arribos, teniendo en cuenta la INVERSA de la función exponencial.
     """
-    pass
+
+    U = random.uniform(0, 1)
+    return -math.log(U) / lamda

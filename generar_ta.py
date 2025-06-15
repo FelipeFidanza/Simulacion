@@ -1,5 +1,11 @@
-def generar_tiempo_de_atencion():
+import random
+import math
+
+
+def generar_tiempo_de_atencion(mu):
     """
     Esta función genera el tiempo de atención teniendo en cuenta la duración de la llamada, a través de la función exponencial.
     """
-    pass
+    # Genero un numero aleatorio con una distribución uniforme
+    U = random.uniform(0, 1)
+    return -math.log(U) / mu
