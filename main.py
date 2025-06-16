@@ -11,7 +11,7 @@ C = 5           # Cantidad de servidores en el sistema
 TPLL = 0        # Tiempo de la proxima llegada
 TPS = [10000000] * C  # Tiempo de la proxima salida del subsistema i
 NS = [0] * C          # Cantidad de personas en el subsistema i
-N = [0] * C          # Cantidad total de personas que pasaron por el subsistema i
+N = 0          # Cantidad total de personas que pasaron por el subsistema i
 STP = [0] * C         # Sumatoria de tiempo de permanencia en el subsistema i
 STA = [0] * C         # Sumatoria de tiempo de atención del subsistema i
 STO = [0] * C         # Sumatoria de tiempo ocioso en el subsistema i
@@ -22,13 +22,14 @@ PTA = [0] * C        # Promedio de tiempo de atención en el subsistema i
 PTO = [0] * C         # Porcentaje de tiempo ocioso del subsistema i
 mu = TF * C/ 300       # Tasa de atención del sistema (300: es la cantidad de llegadas que registramos)
 lamda = 300/TF     # Tasa de llegada al sistema 
+arrepentidos = 0    # Contador de arrepentidos en el sistema
 
 
 # Itera hasta que el tiempo de la simulación alcance el tiempo máximo establecido
 while T <= TF:
     k = buscar_menor(TPS)  
     if TPLL <= TPS[k]:
-        llegada(STP, TPLL, T, NS, N, STA, STO, CTO)
+        llegada(STP, TPLL, TPS, k, T, NS, N, STA, STO, CTO, lamda, mu, arrepentidos)
     else:
         salida(STP, TPS, k, T, NS, STA, CTO, mu)
 
@@ -47,7 +48,7 @@ PTA = STA / N
 PTO = STO * 100 / T
 
 # Porcentaje de arrepentimiento
-#PA = A*100 / N
+PA = arrepentidos * 100 / N
 
 
 

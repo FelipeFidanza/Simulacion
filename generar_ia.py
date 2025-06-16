@@ -1,7 +1,7 @@
 import random
 import math
 
-def generar_intervalos_entre_arribos(lamda):
+def generar_intervalos_entre_arribos(lamda: float) -> float:
     """
     Esta función genera los intervalos entre arribos, teniendo en cuenta la INVERSA de la función exponencial.
     """
