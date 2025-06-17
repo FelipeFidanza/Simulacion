@@ -9,5 +9,5 @@ def buscar_menor(fila:list) -> int:
         if fila[i] < menor:
             menor = fila[i]
             pos = i
-    # print("El menor en la fila es:", menor, "en la posición", pos)
+    #  print("El menor en la fila es:", menor, "en la posición", pos)
     return pos
