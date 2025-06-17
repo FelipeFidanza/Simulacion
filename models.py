@@ -61,7 +61,7 @@ class Subsistema:
     ):
         self.clientes = clientes
         
-    def actualizar_tiempos_espera(self):
+    def tratar_arrepentimiento(self):
         #arranca el 1 pq se saltea el primero que está siendo atendido
         for cliente in self.clientes[1:]:
             i = self.clientes.index(cliente)
