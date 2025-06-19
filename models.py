@@ -19,11 +19,11 @@ class Sistema:
         self.subsistemas = subsistemas
         self.tiempo = 0
         self.tiempo_proxima_llegada = 0
+        self.tiempo_proxima_salida = 0
         self.tiempo_arrepentimiento = tiempo_arrepentimiento
         self.mu = tiempo_final * len(self.subsistemas) / 300
         self.lamda = 300 / tiempo_final
         self.cant_arrepentidos = 0
-        self.intervalo_entre_arribos = 0
         self.tiempo_final = tiempo_final
 
 
@@ -39,7 +39,7 @@ class Sistema:
         U = random.uniform(0, 1)
         return -math.log(U) / self.mu
     
-    def buscar_cola_mas_corta(self):
+    def buscar_fila_mas_corta(self):
         #TODO: incializar la variable de tal forma que nunca cambiemos el tipo int -> objeto Subsistema
         subsistema_menor_fila = float("inf")
         for subsistema in self.subsistemas: 
@@ -47,17 +47,44 @@ class Sistema:
             if cantidad_clientes > subsistema_menor_fila:
                 subsistema_menor_fila = subsistema
         return subsistema_menor_fila
+    
+    def obtener_proxima_llegada(self):
+        intervalo_entre_arribos = self.generar_ia()
+        self.tiempo_proxima_llegada = self.tiempo + intervalo_entre_arribos
        
     def obtener_proxima_salida(self):
         subsistema_proxima_salida = float("inf")
         for subsistema in self.subsistemas: 
             proxima_salida = subsistema.tiempo_proxima_salida
             if proxima_salida < subsistema_proxima_salida:
-                subsistema_proxima_salida = subsistema
-        return subsistema_proxima_salida
+                subsistema_proxima_salida = proxima_salida
+        self.tiempo_proxima_salida = subsistema_proxima_salida
+    
+    def verificar_proximo_evento(self):
+        """
+        Verifica cuál es el próximo evento a ocurrir en el sistema: una llegada o una salida.
+        """
+        self.obtener_proxima_llegada()
+        self.obtener_proxima_salida()
+
+        return self.tiempo_proxima_llegada <= self.tiempo_proxima_salida
+    
+    def generar_cliente(self):
+        """
+        Genera un cliente con un tiempo de llegada y un tiempo de atención.
+        El tiempo de llegada es el tiempo actual del sistema y el tiempo de atención es generado aleatoriamente.
+        """
+        tiempo_llegada = self.tiempo
+        tiempo_atencion = self.generar_ta()
+        cliente = Cliente(tiempo_llegada, tiempo_atencion)
+
+        fila_a_ingresar = self.buscar_fila_mas_corta()
+
+        fila_a_ingresar.recibir_cliente(cliente)
         
-    def verificar_tiempo(self):
-        pass
+    def verificar_tiempo_final(self):
+        return self.tiempo_final <= self.tiempo
+        
 
 class Cliente:
     def __init__(
@@ -77,6 +104,7 @@ class Subsistema:
     """
     def __init__(
         self, 
+        sistema
     ):
         self.clientes = []
         self.comienzo_tiempo_ocioso = 0
@@ -85,17 +113,27 @@ class Subsistema:
         self.sumatoria_tiempo_ocioso = 0
         self.sumatoria_tiempo_permanencia = 0 
         self.sumatoria_tiempo_atencion = 0
+        self.sistema = sistema
+
 
     def recibir_cliente(self, cliente):
         self.clientes.append(cliente)
         self.cantidad_total_clientes += 1
         self.acumular_tiempo_atencion(cliente)
 
-    def finalizar_atencion(self):
-        if self.clientes:
-            cliente = self.clientes.pop(0)
+       # self.tratar_arrepentimiento(cliente)
+
+        if len(self.clientes) == 1:
             self.calcular_proxima_salida()
-            return cliente
+
+
+    def finalizar_atencion(self):
+        
+        self.clientes = self.clientes[1:]
+        if self.clientes:
+            self.calcular_proxima_salida()
+        else:
+            self.comienzo_tiempo_ocioso = self.sistema.tiempo
     
     def calcular_proxima_salida(self):
         if self.clientes:
@@ -104,7 +142,7 @@ class Subsistema:
         else:
             self.tiempo_proxima_salida = float("inf")
         
-    def tratar_arrepentimiento(self):
+    def tratar_arrepentimiento(self, cliente):
         #arranca el 1 pq se saltea el primero que está siendo atendido
         for cliente in self.clientes[1:]:
             i = self.clientes.index(cliente)
@@ -115,14 +153,14 @@ class Subsistema:
             # adelante en la fila
                    
         
-    def acumular_tiempo_ocioso(self, sistema: Sistema):
-        self.sumatoria_tiempo_ocioso += sistema.tiempo - self.comienzo_tiempo_ocioso
+    def acumular_tiempo_ocioso(self):
+        self.sumatoria_tiempo_ocioso += self.sistema.tiempo - self.comienzo_tiempo_ocioso
 
     def acumular_tiempo_atencion(self, cliente: Cliente):
         self.sumatoria_tiempo_atencion += cliente.tiempo_atencion
         
-    def acumular_tiempo_permanencia(self, sistema: Sistema):
-        self.sumatoria_tiempo_permanencia += (sistema.tiempo_proxima_llegada - sistema.tiempo) * len(self.clientes)
+    def acumular_tiempo_permanencia(self):
+        self.sumatoria_tiempo_permanencia += (self.sistema.tiempo_proxima_llegada - self.sistema.tiempo) * len(self.clientes)
         
     
  
