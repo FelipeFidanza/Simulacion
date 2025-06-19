@@ -89,12 +89,11 @@ class Subsistema:
     def recibir_cliente(self, cliente):
         self.clientes.append(cliente)
         self.cantidad_total_clientes += 1
-        self.activo = True
+        self.acumular_tiempo_atencion(cliente)
 
     def finalizar_atencion(self):
         if self.clientes:
             cliente = self.clientes.pop(0)
-            self.acumular_tiempo_atencion()
             self.calcular_proxima_salida()
             return cliente
     
@@ -119,8 +118,8 @@ class Subsistema:
     def acumular_tiempo_ocioso(self, sistema: Sistema):
         self.sumatoria_tiempo_ocioso += sistema.tiempo - self.comienzo_tiempo_ocioso
 
-    def acumular_tiempo_atencion(self):
-        self.sumatoria_tiempo_atencion += self.clientes[].tiempo_atencion if self.clientes else 0
+    def acumular_tiempo_atencion(self, cliente: Cliente):
+        self.sumatoria_tiempo_atencion += cliente.tiempo_atencion
         
     def acumular_tiempo_permanencia(self, sistema: Sistema):
         self.sumatoria_tiempo_permanencia += (sistema.tiempo_proxima_llegada - sistema.tiempo) * len(self.clientes)
