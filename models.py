@@ -3,24 +3,28 @@ import random
 import math
 
 class Sistema:
+    """
+    Clase que representa el sistema de atención al cliente, 
+    que contiene múltiples subsistemas (servidores).
+    Opcionalmente se puede definir un tiempo final y de arrepentimiento.
+    Por defecto, el tiempo final es 14400 segundos (4 horas) y el tiempo de arrepentimiento es 300 segundos (5 minutos). 
+    """
+
     def __init__(
         self, 
-        subsistemas,
-        cant_subsistemas,
-        mu,
-        lamda,
-        tiempo_proxima_llegada = 0,
+        subsistemas,  
         tiempo_final = 14400,
-        intervalo_entre_arribos = 0,
         tiempo_arrepentimiento = 300,
-        cant_arrepentidos = 0,
-        tiempo = 0
-    ):
+    ): 
         self.subsistemas = subsistemas
-        self.mu = tiempo_final * cant_subsistemas / 300
+        self.tiempo = 0
+        self.tiempo_proxima_llegada = 0
+        self.tiempo_arrepentimiento = tiempo_arrepentimiento
+        self.mu = tiempo_final * len(self.subsistemas) / 300
         self.lamda = 300 / tiempo_final
-        self.tiempo_proxima_llegada = tiempo_proxima_llegada
-        self.tiempo = tiempo
+        self.cant_arrepentidos = 0
+        self.intervalo_entre_arribos = 0
+        self.tiempo_final = tiempo_final
         
     def generar_ia(self):
         U = random.uniform(0, 1)
@@ -48,18 +52,21 @@ class Sistema:
         pass
         
 class Subsistema:
+    """
+    Clase que representa un subsistema dentro del sistema de atención al cliente.
+    Cada subsistema tiene una lista de clientes en espera
+    """
     def __init__(
         self, 
-        clientes = [], 
-        cantidad_total_clientes = 0,
-        tiempo_proxima_salida = 0, 
-        comienzo_tiempo_ocioso = 0,
-        sumatoria_tiempo_ocioso = 0, 
-        sumatoria_tiempo_permanencia = 0, 
-        sumatoria_tiempo_atencion = 0,
-        activo = False,
     ):
-        self.clientes = clientes
+        self.clientes = []
+        self.comienzo_tiempo_ocioso = 0
+        self.cantidad_total_clientes = 0
+        self.tiempo_proxima_salida = 0
+        self.sumatoria_tiempo_ocioso = 0
+        self.sumatoria_tiempo_permanencia = 0 
+        self.sumatoria_tiempo_atencion = 0
+        self.activo = False
         
     def tratar_arrepentimiento(self):
         #arranca el 1 pq se saltea el primero que está siendo atendido
@@ -70,9 +77,7 @@ class Subsistema:
             # es el tiempo de atención restante del cliente que está siendo atendido
             # mas la sumatoria de de los tiempos de atención de las personas que están
             # adelante en la fila
-                
-            
-            
+                   
         
     def incrementar_tiempo_de_espera(self):
         pass
@@ -80,9 +85,9 @@ class Subsistema:
     def verificar_arrepentidos(self):
         pass
         
-    def acumular_tiempo_ocioso(self):
-        pass
-        
+    def acumular_tiempo_ocioso(self, sistema: Sistema):
+        self.sumatoria_tiempo_ocioso += sistema.tiempo - self.comienzo_tiempo_ocioso
+
     def acumular_tiempo_atencion(self):
         pass
         
@@ -99,10 +104,10 @@ class Cliente:
     def __init__(
         self, 
         tiempo_llegada,
-        tiempo_atencion = 0,
-        arrepentido = False,
     ):
         self.tiempo_llegada = tiempo_llegada
+        self.tiempo_atencion = 0
+        self.arrepentido = 0
         
     def generar_tiempo_atencion(self, lamda):
         #logica para generar tiempo de atención
