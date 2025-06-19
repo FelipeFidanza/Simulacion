@@ -1,3 +1,4 @@
+from Cliente import Cliente
 class Subsistema:
     """
     Clase que representa un subsistema dentro del sistema de atención al cliente.
@@ -17,16 +18,6 @@ class Subsistema:
         self.sistema = sistema
 
 
-    def recibir_cliente(self, cliente):
-        self.clientes.append(cliente)
-
-
-       # self.tratar_arrepentimiento(cliente)
-
-        if len(self.clientes) == 1:
-            self.calcular_proxima_salida()
-
-
     def finalizar_atencion(self):
         
         self.clientes.pop(0)
@@ -38,28 +29,37 @@ class Subsistema:
     def calcular_proxima_salida(self):
         if self.clientes:
             cliente = self.clientes[0]
+            cliente.tiempo_inicio_atencion = self.sistema.tiempo
             self.tiempo_proxima_salida = cliente.tiempo_inicio_atencion + cliente.tiempo_atencion
         else:
             self.tiempo_proxima_salida = float("inf")
         
-    def tratar_arrepentimiento(self, sistema : Sistema):
+    def tratar_arrepentimiento(self):
         tiempo_espera = 0
         # [\(u . u)/, \(u . u)/,/ \(u . u)/, \(u . u)/]
-        tiempo_espera += self.clientes[0].tiempo_inicio_atencion + self.clientes[0].tiempo_atencion - sistema.tiempo
+        tiempo_espera += self.clientes[0].tiempo_inicio_atencion + self.clientes[0].tiempo_atencion - self.sistema.tiempo
         
         for cliente in self.clientes[1:-1]:
             tiempo_espera += cliente.tiempo_atencion
             
         
-        if tiempo_espera > sistema.tiempo_arrepentimiento:
+        if tiempo_espera > self.sistema.tiempo_arrepentimiento:
             self.clientes.pop()
-            sistema.cant_arrepentidos += 1
+            self.sistema.cant_arrepentidos += 1
             return  
             
         self.cantidad_total_clientes += 1
         self.acumular_tiempo_atencion(self.clientes[-1])
             
-                   
+    def recibir_cliente(self, cliente):
+        self.clientes.append(cliente)
+   
+        if len(self.clientes) == 1:
+            self.calcular_proxima_salida()
+            return
+            
+        self.tratar_arrepentimiento()
+           
         
     def acumular_tiempo_ocioso(self):
         self.sumatoria_tiempo_ocioso += self.sistema.tiempo - self.comienzo_tiempo_ocioso

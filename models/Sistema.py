@@ -1,5 +1,7 @@
 import random
 import math
+from Cliente import Cliente
+from Subsistema import Subsistema
 
 class Sistema:
     """
@@ -38,12 +40,11 @@ class Sistema:
         U = random.uniform(0, 1)
         return -math.log(U) / self.mu
     
-    def buscar_fila_mas_corta(self):
+    def buscar_fila_mas_corta(self) -> Subsistema:
         #TODO: incializar la variable de tal forma que nunca cambiemos el tipo int -> objeto Subsistema
-        subsistema_menor_fila = float("inf")
+        subsistema_menor_fila = self.subsistemas[0]
         for subsistema in self.subsistemas: 
-            cantidad_clientes = len(subsistema.clientes)
-            if cantidad_clientes > subsistema_menor_fila:
+            if len(subsistema.clientes) < len(subsistema_menor_fila.clientes):
                 subsistema_menor_fila = subsistema
         return subsistema_menor_fila
     
@@ -52,23 +53,28 @@ class Sistema:
         self.tiempo_proxima_llegada = self.tiempo + intervalo_entre_arribos
        
     def obtener_proxima_salida(self):
-        subsistema_proxima_salida = float("inf")
+        subsistema_proxima_salida = self.subsistemas[0]
         for subsistema in self.subsistemas: 
-            proxima_salida = subsistema.tiempo_proxima_salida
-            if proxima_salida < subsistema_proxima_salida:
-                subsistema_proxima_salida = proxima_salida
-        self.tiempo_proxima_salida = subsistema_proxima_salida
+            if subsistema.tiempo_proxima_salida < subsistema_proxima_salida.tiempo_proxima_salida:
+                subsistema_proxima_salida = subsistema
+        self.tiempo_proxima_salida = subsistema_proxima_salida.tiempo_proxima_salida
+        return subsistema_proxima_salida
     
-    def verificar_proximo_evento(self):
-        """
-        Verifica cuál es el próximo evento a ocurrir en el sistema: una llegada o una salida.
-        """
-        self.obtener_proxima_llegada()
-        self.obtener_proxima_salida()
+    
 
-        return self.tiempo_proxima_llegada <= self.tiempo_proxima_salida
     
-    def generar_cliente(self):
+    # Para nosotros que esto vaya en el flujo nomas :) 
+
+    # def verificar_proximo_evento(self):
+    #     """
+    #     Verifica cuál es el próximo evento a ocurrir en el sistema: una llegada o una salida.
+    #     """
+    #     self.obtener_proxima_llegada()
+    #     self.obtener_proxima_salida()
+
+    #     return self.tiempo_proxima_llegada <= self.tiempo_proxima_salida
+    
+    def arribar_cliente(self):
         """
         Genera un cliente con un tiempo de llegada y un tiempo de atención.
         El tiempo de llegada es el tiempo actual del sistema y el tiempo de atención es generado aleatoriamente.
@@ -81,5 +87,5 @@ class Sistema:
 
         fila_a_ingresar.recibir_cliente(cliente)
         
-    def verificar_tiempo_final(self):
-        return self.tiempo_final <= self.tiempo
+    # def verificar_tiempo_final(self):
+    #     return self.tiempo_final <= self.tiempo
