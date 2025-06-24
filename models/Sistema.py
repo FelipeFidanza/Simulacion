@@ -59,6 +59,3 @@ class Sistema:
         fila_a_ingresar.recibir_cliente(cliente)
 
         self.tiempo = tiempo_prox_llegada
-
-    # def verificar_tiempo_final(self):
-    #     return self.tiempo_final <= self.tiempo
