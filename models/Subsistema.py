@@ -1,6 +1,4 @@
 from Cliente import Cliente
-from Sistema import Sistema
-
 
 class Subsistema:
     """
@@ -10,7 +8,7 @@ class Subsistema:
 
     def __init__(
         self,
-        sistema: Sistema
+        sistema
     ):
         self.clientes = []
         self.comienzo_tiempo_ocioso = 0

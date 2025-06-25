@@ -1,5 +1,3 @@
-import random
-import math
 from Cliente import Cliente
 from Subsistema import Subsistema
 

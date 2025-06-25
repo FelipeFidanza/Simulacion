@@ -10,7 +10,7 @@ class LectorCSV:
 
     def _leer_csv(self, archivo_csv):
         with open(archivo_csv, newline='') as archivo:
-            lector = csv.reader(archivo)
+            lector = csv.reader(archivo, delimiter=';')
             for fila in lector:
                 if fila:  # Para evitar filas vacías
                     self.intervalos_arribo.append(float(fila[0]))
