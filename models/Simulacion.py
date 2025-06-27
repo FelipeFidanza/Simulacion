@@ -24,29 +24,37 @@ class Simulacion:
         sistema.obtener_proxima_llegada(intervalo) 
 
       
-        while sistema.tiempo < sistema.tiempo_final and (datos_x_corrida > 0 or sistema.hay_clientes_en_sistema()):
+        while sistema.tiempo < sistema.tiempo_final:
+            if (datos_x_corrida > 0 or sistema.hay_clientes_en_sistema()):
+                subsistema_prox_salida = sistema.obtener_proxima_salida()
 
-            subsistema_prox_salida = sistema.obtener_proxima_salida()
+                if sistema.tiempo_proxima_llegada <= sistema.tiempo_proxima_salida and datos_x_corrida > 0:
+                    for subsistema in sistema.subsistemas:
+                        subsistema.acumular_tiempo_permanencia(sistema.tiempo_proxima_llegada)
+                    sistema.avanzar_tiempo(sistema.tiempo_proxima_llegada)
+                    sistema.arribar_cliente(tiempo_atencion)
 
-            if sistema.tiempo_proxima_llegada <= sistema.tiempo_proxima_salida and datos_x_corrida > 0:
-                for subsistema in sistema.subsistemas:
-                    subsistema.acumular_tiempo_permanencia(sistema.tiempo_proxima_llegada)
-                sistema.avanzar_tiempo(sistema.tiempo_proxima_llegada)
-                sistema.arribar_cliente(tiempo_atencion)
+        
+                    datos_x_corrida -= 1
+                    if datos_x_corrida > 0:
+                        intervalo, tiempo_atencion = self.lector.obtener_siguiente()
+                        sistema.obtener_proxima_llegada(intervalo)
+                else:
+                    
+                    for subsistema in sistema.subsistemas:
+                        subsistema.acumular_tiempo_permanencia(sistema.tiempo_proxima_salida)  
 
-    
-                datos_x_corrida -= 1
-                if datos_x_corrida > 0:
-                    intervalo, tiempo_atencion = self.lector.obtener_siguiente()
-                    sistema.obtener_proxima_llegada(intervalo)
+                    sistema.avanzar_tiempo(sistema.tiempo_proxima_salida)
+                    subsistema_prox_salida.finalizar_atencion()
             else:
-                
+                # Si ya no van a llegar más clientes y ya todos fueron atendidos se acumula el tiempo ocioso restante hasta el final de la corrida
                 for subsistema in sistema.subsistemas:
-                    subsistema.acumular_tiempo_permanencia(sistema.tiempo_proxima_salida)  
+                    subsistema.comienzo_tiempo_ocioso = sistema.tiempo
+                   
+                sistema.tiempo = sistema.tiempo_final
 
-                sistema.avanzar_tiempo(sistema.tiempo_proxima_salida)
-                subsistema_prox_salida.finalizar_atencion()
-            
+                for subsistema in sistema.subsistemas:
+                    subsistema.acumular_tiempo_ocioso()
             
         
         sistema.imprimir_resultados(nro_corrida)
