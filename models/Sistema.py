@@ -1,5 +1,6 @@
 from Cliente import Cliente
 from Subsistema import Subsistema
+from tabulate import tabulate
 
 
 class Sistema:
@@ -19,7 +20,7 @@ class Sistema:
         self.subsistemas : Subsistema = subsistemas
         self.tiempo = 0
         self.tiempo_proxima_llegada = 0
-        self.tiempo_proxima_salida = 0
+        self.tiempo_proxima_salida = float('inf')
         self.tiempo_arrepentimiento = tiempo_arrepentimiento
         self.mu = tiempo_final * len(self.subsistemas) / 300
         self.lamda = 300 / tiempo_final
@@ -27,15 +28,25 @@ class Sistema:
         self.tiempo_final = tiempo_final
 
     def buscar_fila_mas_corta(self) -> Subsistema:
-        # TODO: incializar la variable de tal forma que nunca cambiemos el tipo int -> objeto Subsistema
         subsistema_menor_fila = self.subsistemas[0]
         for subsistema in self.subsistemas:
             if len(subsistema.clientes) < len(subsistema_menor_fila.clientes):
                 subsistema_menor_fila = subsistema
         return subsistema_menor_fila
+    
+    def avanzar_tiempo(self, tiempo):
+        self.tiempo = tiempo
+
+    def hay_clientes_en_sistema(self):
+        for subsistema in self.subsistemas:
+            if subsistema.clientes:
+                return True
+        return False
 
     def obtener_proxima_llegada(self, intervalo_entre_arribos):
-        self.tiempo_proxima_llegada = self.tiempo + intervalo_entre_arribos
+        
+        self.tiempo_proxima_llegada += intervalo_entre_arribos
+
 
     def obtener_proxima_salida(self) -> Subsistema:
         subsistema_proxima_salida = self.subsistemas[0]
@@ -45,33 +56,36 @@ class Sistema:
         self.tiempo_proxima_salida = subsistema_proxima_salida.tiempo_proxima_salida
         return subsistema_proxima_salida
 
-    def arribar_cliente(self, tiempo_atencion, tiempo_prox_llegada):
+    def arribar_cliente(self, tiempo_atencion):
         """
         Genera un cliente con un tiempo de llegada y un tiempo de atención.
         El tiempo de llegada es el tiempo actual del sistema y el tiempo de atención es generado aleatoriamente.
         """
-        cliente = Cliente(tiempo_prox_llegada, tiempo_atencion)
+        
+        cliente = Cliente(self.tiempo, tiempo_atencion)
 
         fila_a_ingresar = self.buscar_fila_mas_corta()
 
         fila_a_ingresar.recibir_cliente(cliente)
-
-        self.tiempo = tiempo_prox_llegada
+      
 
     def hallar_porcentaje_tiempo_ocioso(self):
         tiempo_oscioso_total = 0
         for subsistema in self.subsistemas:
             tiempo_oscioso_total += subsistema.sumatoria_tiempo_ocioso
-
+        if self.tiempo == 0:
+            return 0
         return tiempo_oscioso_total * 100 / self.tiempo
 
     def hallar_porcentaje_arrepentidos(self):
         clientes_sistema = 0
         for subsistema in self.subsistemas:
             clientes_sistema += subsistema.cantidad_total_clientes 
+        if clientes_sistema == 0:
+            return 0
         return self.cant_arrepentidos * 100 / clientes_sistema
 
-    def imprimir_resultados(self):
+    def imprimir_resultados(self, nro_corrida):
         clientes_sistema = 0
         promedio_permanencia_sistema = 0
         promedio_espera_sistema = 0
@@ -81,11 +95,26 @@ class Sistema:
             promedio_permanencia_sistema += subsistema.promedio_tiempo_permanencia
             promedio_espera_sistema += subsistema.promedio_tiempo_espera
             promedio_atencion += subsistema.promedio_tiempo_atencion
+
+            datos = [
+                ["Clientes del sistema", subsistema.cantidad_total_clientes],
+                ["Acumulacion tiempo de permanencia", subsistema.sumatoria_tiempo_permanencia],
+                ["Promedio tiempo de permanencia", subsistema.promedio_tiempo_permanencia],              
+            ]
+
+            print(tabulate(datos, headers=[f'Corrida {nro_corrida + 1}', "Valor"], tablefmt="fancy_grid"))
+
         tiempo_ocioso = self.hallar_porcentaje_tiempo_ocioso()
         arrepentidos = self.hallar_porcentaje_arrepentidos()
 
-        print("Promedio del tiempo de permanencia en el sistema:" + " "*5 + "| " + promedio_permanencia_sistema) #49
-        print("Promedio del tiempo de espera en el sistema:" + " "*10 + "| " + promedio_espera_sistema) #44
-        print("Promedio del tiempo de atencion en el sistema:" + " "*8 + "| "  + promedio_atencion) #46
-        print("Porcentaje de tiempo ocioso del sistema:" + " "*14 + "| " + tiempo_ocioso) #40
-        print("Porcentaje de personas arrepentidas en el sistema:" + " "*4 + "| " + arrepentidos) #50
+        
+        # datos = [
+        #     ["Acumulacion de tiempo de permanencia", self.subsistemas[0].sumatoria_tiempo_permanencia],
+        #     ["Promedio del tiempo de permanencia en el sistema", promedio_permanencia_sistema],
+        #     ["Promedio del tiempo de espera en el sistema", promedio_espera_sistema],
+        #     ["Promedio del tiempo de atención en el sistema", promedio_atencion],
+        #     ["Porcentaje de tiempo ocioso del sistema", tiempo_ocioso],
+        #     ["Porcentaje de personas arrepentidas en el sistema", arrepentidos]
+        # ]
+
+        # print(tabulate(datos, headers=[f'Corrida {nro_corrida + 1}', "Valor"], tablefmt="fancy_grid"))
