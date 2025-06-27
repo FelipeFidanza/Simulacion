@@ -1,3 +1,4 @@
+from tabulate import tabulate
 from LectorCSV import LectorCSV
 from Sistema import Sistema
 from Subsistema import Subsistema 
@@ -55,8 +56,17 @@ class Simulacion:
 
                 for subsistema in sistema.subsistemas:
                     subsistema.acumular_tiempo_ocioso()
-            
-        
+
+        datos = [
+            ["Cantidad de corridas", self.cant_corridas],
+            ["Cantidad de servidores", self.cant_servidores],
+            ["Tiempo total en segundos", sistema.tiempo_final],
+            ["Tiempo de arrepentimiento", sistema.tiempo_arrepentimiento],
+    
+        ]
+
+        print(tabulate(datos, headers=[f'Datos de inicialización', "Valor"], tablefmt="fancy_grid"))
+
         sistema.imprimir_resultados(nro_corrida)
 
 

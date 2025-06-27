@@ -44,14 +44,13 @@ class Subsistema:
     def tratar_arrepentimiento(self):
         cliente_en_servicio = self.clientes[0]
         tiempo_transcurrido_en_servicio = self.sistema.tiempo - cliente_en_servicio.tiempo_inicio_atencion
-
+        
         # tiempo de espera del cliente que ya esta siendo atendido
         tiempo_espera = cliente_en_servicio.tiempo_atencion - tiempo_transcurrido_en_servicio
-
-
-        for cliente in self.clientes[1:-1]:
+       
+        for cliente in self.clientes[1:-1]:               
             # tiempo de espera del cliente que esta siendo atendido mas los clientes que esten por delante en la fila sin contar el que llego recien
-            tiempo_espera += cliente.tiempo_atencion
+            tiempo_espera += cliente.tiempo_atencion  
 
         if tiempo_espera > self.sistema.tiempo_arrepentimiento:
             self.clientes.pop()
@@ -93,6 +92,11 @@ class Subsistema:
             return 0
         return self.sumatoria_tiempo_permanencia / self.cantidad_total_clientes
     
+    @property
+    def promedio_tiempo_espera(self):
+        if self.cantidad_total_clientes == 0:
+            return 0
+        return self.sumatoria_tiempo_permanencia - self.sumatoria_tiempo_atencion/ self.cantidad_total_clientes
     
     @property
     def promedio_tiempo_atencion(self):
