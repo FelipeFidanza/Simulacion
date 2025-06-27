@@ -18,12 +18,16 @@ class Subsistema:
         self.sumatoria_tiempo_ocioso = 0
         self.sumatoria_tiempo_permanencia = 0
         self.sumatoria_tiempo_atencion = 0
+        self.sumatoria_tiempo_espera = 0
 
         self.sistema = sistema
 
     def finalizar_atencion(self):
         if self.clientes:
-            self.clientes.pop(0)      
+            cliente = self.clientes.pop(0)
+
+            tiempo_permanencia = self.sistema.tiempo - cliente.tiempo_llegada
+            self.sumatoria_tiempo_permanencia += tiempo_permanencia
 
             if self.clientes:
                 self.calcular_proxima_salida()
@@ -32,17 +36,17 @@ class Subsistema:
                 self.tiempo_proxima_salida = float("inf")
 
 
+
     def calcular_proxima_salida(self):
         cliente = self.clientes[0]
         cliente.tiempo_inicio_atencion = self.sistema.tiempo
         self.tiempo_proxima_salida = cliente.tiempo_inicio_atencion + cliente.tiempo_atencion
-
-        if math.isfinite(self.tiempo_proxima_salida):
-           self.sumatoria_tiempo_atencion += cliente.tiempo_atencion
+        self.sumatoria_tiempo_atencion += cliente.tiempo_atencion
        
 
     def tratar_arrepentimiento(self):
         cliente_en_servicio = self.clientes[0]
+
         tiempo_transcurrido_en_servicio = self.sistema.tiempo - cliente_en_servicio.tiempo_inicio_atencion
         
         # tiempo de espera del cliente que ya esta siendo atendido
@@ -56,7 +60,8 @@ class Subsistema:
             self.clientes.pop()
             self.sistema.cant_arrepentidos += 1
         else:
-            self.cantidad_total_clientes += 1
+            self.sumatoria_tiempo_espera += tiempo_espera
+           
            
 
     def recibir_cliente(self, cliente):
@@ -65,8 +70,6 @@ class Subsistema:
         if len(self.clientes) == 1:
             self.calcular_proxima_salida()  
             self.cantidad_total_clientes += 1
-
-            self.acumular_tiempo_atencion(cliente)
 
             if self.comienzo_tiempo_ocioso != 0:
                 self.acumular_tiempo_ocioso()
@@ -78,13 +81,7 @@ class Subsistema:
     def acumular_tiempo_ocioso(self):
         self.sumatoria_tiempo_ocioso += self.sistema.tiempo - self.comienzo_tiempo_ocioso
 
-    def acumular_tiempo_atencion(self, cliente: Cliente):
-        self.sumatoria_tiempo_atencion += cliente.tiempo_atencion
-
-    def acumular_tiempo_permanencia(self, tiempo_prox_evento=float('inf')):
-        if math.isfinite(tiempo_prox_evento):          
-            self.sumatoria_tiempo_permanencia += (tiempo_prox_evento - self.sistema.tiempo) * len(self.clientes)
-           
+   
 
     @property
     def promedio_tiempo_permanencia(self):
@@ -96,7 +93,7 @@ class Subsistema:
     def promedio_tiempo_espera(self):
         if self.cantidad_total_clientes == 0:
             return 0
-        return self.sumatoria_tiempo_permanencia - self.sumatoria_tiempo_atencion/ self.cantidad_total_clientes
+        return (self.sumatoria_tiempo_permanencia - self.sumatoria_tiempo_atencion) / self.cantidad_total_clientes
     
     @property
     def promedio_tiempo_atencion(self):

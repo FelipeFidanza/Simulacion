@@ -30,8 +30,7 @@ class Simulacion:
                 subsistema_prox_salida = sistema.obtener_proxima_salida()
 
                 if sistema.tiempo_proxima_llegada <= sistema.tiempo_proxima_salida and datos_x_corrida > 0:
-                    for subsistema in sistema.subsistemas:
-                        subsistema.acumular_tiempo_permanencia(sistema.tiempo_proxima_llegada)
+                  
                     sistema.avanzar_tiempo(sistema.tiempo_proxima_llegada)
                     sistema.arribar_cliente(tiempo_atencion)
 
@@ -41,9 +40,7 @@ class Simulacion:
                         intervalo, tiempo_atencion = self.lector.obtener_siguiente()
                         sistema.obtener_proxima_llegada(intervalo)
                 else:
-                    
-                    for subsistema in sistema.subsistemas:
-                        subsistema.acumular_tiempo_permanencia(sistema.tiempo_proxima_salida)  
+                     
 
                     sistema.avanzar_tiempo(sistema.tiempo_proxima_salida)
                     subsistema_prox_salida.finalizar_atencion()

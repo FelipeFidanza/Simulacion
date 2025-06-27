@@ -87,17 +87,17 @@ class Sistema:
 
     def imprimir_resultados(self, nro_corrida):
         clientes_atendidos = 0
-        promedio_permanencia_sistema = 0
+        sumatoria_permanencia = 0
+        sumatoria_atencion = 0
         sumatoria_tiempo_ocioso_sistema = 0
-        promedio_atencion = 0
-        promedio_espera = 0
 
         for indice, subsistema in enumerate(self.subsistemas):
             clientes_atendidos += subsistema.cantidad_total_clientes
-            promedio_permanencia_sistema += subsistema.promedio_tiempo_permanencia
+            sumatoria_permanencia += subsistema.sumatoria_tiempo_permanencia
+            sumatoria_atencion += subsistema.sumatoria_tiempo_atencion
             sumatoria_tiempo_ocioso_sistema += subsistema.sumatoria_tiempo_ocioso
-            promedio_atencion += subsistema.promedio_tiempo_atencion
-            promedio_espera += subsistema.promedio_tiempo_espera
+            print("Sumatoria de permanencia: ", sumatoria_permanencia, "sumatoria de atencion: ", sumatoria_atencion)
+            sumatoria_espera = sumatoria_permanencia - sumatoria_atencion
 
             datos = [
             ["Cantidad de clientes atendidos en el subsistema", subsistema.cantidad_total_clientes],
@@ -109,9 +109,18 @@ class Sistema:
 
             print(tabulate(datos, headers=[f'Subsistema {indice + 1}', "Valor"], tablefmt="fancy_grid"))
 
+        if clientes_atendidos > 0:
+            promedio_permanencia_sistema = sumatoria_permanencia / clientes_atendidos
+            promedio_espera = sumatoria_espera / clientes_atendidos
+            promedio_atencion = sumatoria_atencion / clientes_atendidos
+        else:
+            promedio_permanencia_sistema = 0
+            promedio_espera = 0
+            promedio_atencion = 0
+
         tiempo_ocioso = self.hallar_porcentaje_tiempo_ocioso()
         arrepentidos = self.hallar_porcentaje_arrepentidos()
-
+       
         
         datos = [
             ["Promedio del tiempo de permanencia en el sistema", promedio_permanencia_sistema],
