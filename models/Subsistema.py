@@ -17,6 +17,7 @@ class Subsistema:
         self.sumatoria_tiempo_ocioso = 0
         self.sumatoria_tiempo_permanencia = 0
         self.sumatoria_tiempo_atencion = 0
+        self.sumatoria_tiempo_espera = 0
         self.sistema = sistema
 
     def finalizar_atencion(self):
@@ -48,6 +49,8 @@ class Subsistema:
             self.clientes.pop()
             self.sistema.cant_arrepentidos += 1
             return
+        
+        self.sumatoria_tiempo_espera += tiempo_espera
 
         self.cantidad_total_clientes += 1
 
@@ -69,3 +72,15 @@ class Subsistema:
     def acumular_tiempo_permanencia(self):
         self.sumatoria_tiempo_permanencia += (
             self.sistema.tiempo_proxima_llegada - self.sistema.tiempo) * len(self.clientes)
+
+    @property
+    def promedio_tiempo_permanencia(self):
+        return self.sumatoria_tiempo_permanencia / self.cantidad_total_clientes
+    
+    @property
+    def promedio_tiempo_espera(self):
+        return self.sumatoria_tiempo_espera / self.cantidad_total_clientes
+    
+    @property
+    def promedio_tiempo_atencion(self):
+        return self.sumatoria_tiempo_atencion / self.cantidad_total_clientes

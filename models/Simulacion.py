@@ -34,7 +34,7 @@ class Simulacion:
             else:  
                 break
 
-        self.imprimir_resultados()
+        sistema.imprimir_resultados()
 
 
     def iniciar_simulacion(self):
@@ -42,8 +42,6 @@ class Simulacion:
         for _ in range(self.cant_corridas):
             self.iniciar_corrida(datos_x_corrida)
 
-    def imprimir_resultados(self):
-        pass
 
 
 if __name__ == "__main__":

@@ -16,7 +16,7 @@ class Sistema:
         tiempo_final=14400,
         tiempo_arrepentimiento=300,
     ):
-        self.subsistemas = subsistemas
+        self.subsistemas : Subsistema = subsistemas
         self.tiempo = 0
         self.tiempo_proxima_llegada = 0
         self.tiempo_proxima_salida = 0
@@ -57,3 +57,35 @@ class Sistema:
         fila_a_ingresar.recibir_cliente(cliente)
 
         self.tiempo = tiempo_prox_llegada
+
+    def hallar_porcentaje_tiempo_ocioso(self):
+        tiempo_oscioso_total = 0
+        for subsistema in self.subsistemas:
+            tiempo_oscioso_total += subsistema.sumatoria_tiempo_ocioso
+
+        return tiempo_oscioso_total * 100 / self.tiempo
+
+    def hallar_porcentaje_arrepentidos(self):
+        clientes_sistema = 0
+        for subsistema in self.subsistemas:
+            clientes_sistema += subsistema.cantidad_total_clientes 
+        return self.cant_arrepentidos * 100 / clientes_sistema
+
+    def imprimir_resultados(self):
+        clientes_sistema = 0
+        promedio_permanencia_sistema = 0
+        promedio_espera_sistema = 0
+        promedio_atencion = 0
+        for subsistema in self.subsistemas:
+            clientes_sistema += subsistema.cantidad_total_clientes
+            promedio_permanencia_sistema += subsistema.promedio_tiempo_permanencia
+            promedio_espera_sistema += subsistema.promedio_tiempo_espera
+            promedio_atencion += subsistema.promedio_tiempo_atencion
+        tiempo_ocioso = self.hallar_porcentaje_tiempo_ocioso()
+        arrepentidos = self.hallar_porcentaje_arrepentidos()
+
+        print("Promedio del tiempo de permanencia en el sistema:" + " "*5 + "| " + promedio_permanencia_sistema) #49
+        print("Promedio del tiempo de espera en el sistema:" + " "*10 + "| " + promedio_espera_sistema) #44
+        print("Promedio del tiempo de atencion en el sistema:" + " "*8 + "| "  + promedio_atencion) #46
+        print("Porcentaje de tiempo ocioso del sistema:" + " "*14 + "| " + tiempo_ocioso) #40
+        print("Porcentaje de personas arrepentidas en el sistema:" + " "*4 + "| " + arrepentidos) #50
