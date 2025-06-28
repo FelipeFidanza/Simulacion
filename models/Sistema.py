@@ -93,18 +93,23 @@ class Sistema:
         return self.cant_arrepentidos * 100 / clientes_totales
 
     def imprimir_resultados(self, nro_corrida):
-        clientes_atendidos = 0
-        sumatoria_permanencia = 0
-        sumatoria_atencion = 0
+        clientes_atendidos_sistema = 0
+        sumatoria_permanencia_sistema = 0
+        sumatoria_atencion_sistema = 0
         sumatoria_tiempo_ocioso_sistema = 0
 
         for indice, subsistema in enumerate(self.subsistemas):
+            clientes_atendidos = 0
+            sumatoria_permanencia = 0
+            sumatoria_atencion = 0
+            sumatoria_espera_sistema = 0
+
             clientes_atendidos += subsistema.clientes_atendidos
             sumatoria_permanencia += subsistema.sumatoria_tiempo_permanencia
             sumatoria_atencion += subsistema.sumatoria_tiempo_atencion
             sumatoria_tiempo_ocioso_sistema += subsistema.sumatoria_tiempo_ocioso
-            print("Sumatoria de permanencia: ", sumatoria_permanencia, "sumatoria de atencion: ", sumatoria_atencion)
             sumatoria_espera = sumatoria_permanencia - sumatoria_atencion
+            print("Sumatoria de permanencia: ", sumatoria_permanencia, "sumatoria de atencion: ", sumatoria_atencion)
             
 
             datos = [
@@ -117,10 +122,17 @@ class Sistema:
 
             print(tabulate(datos, headers=[f'Subsistema {indice + 1}', "Valor"], tablefmt="fancy_grid"))
 
+            clientes_atendidos_sistema += clientes_atendidos
+            sumatoria_permanencia_sistema += sumatoria_atencion
+            sumatoria_atencion_sistema += sumatoria_atencion
+            sumatoria_atencion_sistema += sumatoria_espera
+
+        print("Sumatoria de permanencia: ", sumatoria_permanencia_sistema, "sumatoria de atencion: ", sumatoria_atencion_sistema)
+
         if clientes_atendidos > 0:
-            promedio_permanencia_sistema = sumatoria_permanencia / clientes_atendidos
-            promedio_espera = sumatoria_espera / clientes_atendidos
-            promedio_atencion = sumatoria_atencion / clientes_atendidos
+            promedio_permanencia_sistema = sumatoria_permanencia_sistema / clientes_atendidos_sistema
+            promedio_espera = sumatoria_espera_sistema / clientes_atendidos_sistema
+            promedio_atencion = sumatoria_atencion_sistema / clientes_atendidos_sistema
         else:
             promedio_permanencia_sistema = 0
             promedio_espera = 0
@@ -135,7 +147,7 @@ class Sistema:
             ["Promedio del tiempo de espera en el sistema", promedio_espera],
             ["Promedio del tiempo de atención en el sistema", promedio_atencion],
             ["Porcentaje de tiempo ocioso del sistema", tiempo_ocioso],
-            ["Cantidad de clientes atendidos en el sistema", clientes_atendidos],
+            ["Cantidad de clientes atendidos en el sistema", clientes_atendidos_sistema],
             ["Cantidad de clientes arrepentidos en el sistema", self.cant_arrepentidos],  
             ["Porcentaje de personas arrepentidas en el sistema", arrepentidos],
         ]

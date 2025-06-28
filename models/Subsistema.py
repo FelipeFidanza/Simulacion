@@ -89,19 +89,19 @@ class Subsistema:
     def promedio_tiempo_permanencia(self):
         if self.cantidad_total_clientes == 0:
             return 0
-        return self.sumatoria_tiempo_permanencia / self.cantidad_total_clientes
+        return self.sumatoria_tiempo_permanencia / self.clientes_atendidos
     
     @property
     def promedio_tiempo_espera(self):
         if self.cantidad_total_clientes == 0:
             return 0
-        return (self.sumatoria_tiempo_permanencia - self.sumatoria_tiempo_atencion) / self.cantidad_total_clientes
+        return (self.sumatoria_tiempo_permanencia - self.sumatoria_tiempo_atencion) / self.clientes_atendidos
     
     @property
     def promedio_tiempo_atencion(self):
         if self.cantidad_total_clientes == 0:
             return 0
-        return self.sumatoria_tiempo_atencion / self.cantidad_total_clientes
+        return self.sumatoria_tiempo_atencion / self.clientes_atendidos
         
     @property
     def clientes_atendidos(self):
