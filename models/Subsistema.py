@@ -19,6 +19,7 @@ class Subsistema:
         self.sumatoria_tiempo_permanencia = 0
         self.sumatoria_tiempo_atencion = 0
         self.sumatoria_tiempo_espera = 0
+        self.cantidad_arrepentidos = 0
 
         self.sistema = sistema
 
@@ -58,7 +59,7 @@ class Subsistema:
 
         if tiempo_espera > self.sistema.tiempo_arrepentimiento:
             self.clientes.pop()
-            self.sistema.cant_arrepentidos += 1
+            self.cantidad_arrepentidos += 1
         else:
             self.sumatoria_tiempo_espera += tiempo_espera
            
@@ -101,3 +102,8 @@ class Subsistema:
         if self.cantidad_total_clientes == 0:
             return 0
         return self.sumatoria_tiempo_atencion / self.cantidad_total_clientes
+        
+    @property
+    def clientes_atendidos(self):
+        return self.cantidad_total_clientes - self.cantidad_arrepentidos
+    

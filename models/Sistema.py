@@ -17,14 +17,13 @@ class Sistema:
         tiempo_final=14400,
         tiempo_arrepentimiento=300,
     ):
-        self.subsistemas : Subsistema = subsistemas
+        self.subsistemas = subsistemas
         self.tiempo = 0
         self.tiempo_proxima_llegada = 0
         self.tiempo_proxima_salida = float('inf')
         self.tiempo_arrepentimiento = tiempo_arrepentimiento
         self.mu = tiempo_final * len(self.subsistemas) / 300
         self.lamda = 300 / tiempo_final
-        self.cant_arrepentidos = 0
         self.tiempo_final = tiempo_final
 
     def buscar_fila_mas_corta(self) -> Subsistema:
@@ -77,13 +76,21 @@ class Sistema:
             return 0
         return tiempo_oscioso_total * 100 / self.tiempo_final
 
-    def hallar_porcentaje_arrepentidos(self):
-        clientes_atendidos = 0
+
+    @property
+    def cant_arrepentidos(self):
+        cant_arrepentidos = 0
         for subsistema in self.subsistemas:
-            clientes_atendidos += subsistema.cantidad_total_clientes 
-        if clientes_atendidos == 0:
+            cant_arrepentidos += subsistema.cantidad_arrepentidos
+        return cant_arrepentidos
+
+    def hallar_porcentaje_arrepentidos(self):
+        clientes_totales = 0
+        for subsistema in self.subsistemas:
+            clientes_totales += subsistema.cantidad_total_clientes
+        if clientes_totales == 0:
             return 0
-        return self.cant_arrepentidos * 100 / (clientes_atendidos + self.cant_arrepentidos)
+        return self.cant_arrepentidos * 100 / clientes_totales
 
     def imprimir_resultados(self, nro_corrida):
         clientes_atendidos = 0
@@ -92,15 +99,16 @@ class Sistema:
         sumatoria_tiempo_ocioso_sistema = 0
 
         for indice, subsistema in enumerate(self.subsistemas):
-            clientes_atendidos += subsistema.cantidad_total_clientes
+            clientes_atendidos += subsistema.clientes_atendidos
             sumatoria_permanencia += subsistema.sumatoria_tiempo_permanencia
             sumatoria_atencion += subsistema.sumatoria_tiempo_atencion
             sumatoria_tiempo_ocioso_sistema += subsistema.sumatoria_tiempo_ocioso
             print("Sumatoria de permanencia: ", sumatoria_permanencia, "sumatoria de atencion: ", sumatoria_atencion)
             sumatoria_espera = sumatoria_permanencia - sumatoria_atencion
+            
 
             datos = [
-            ["Cantidad de clientes atendidos en el subsistema", subsistema.cantidad_total_clientes],
+            ["Cantidad de clientes atendidos en el subsistema", subsistema.clientes_atendidos],
             ["Promedio del tiempo de permanencia en el subsistema", subsistema.promedio_tiempo_permanencia], 
             ["Promedio del tiempo de espera en el subsistema", subsistema.promedio_tiempo_espera],           
             ["Promedio del tiempo de atención en el subsistema", subsistema.promedio_tiempo_atencion], 
@@ -133,3 +141,6 @@ class Sistema:
         ]
 
         print(tabulate(datos, headers=[f'Corrida {nro_corrida + 1}', "Valor"], tablefmt="fancy_grid"))
+
+
+    
