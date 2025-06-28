@@ -66,10 +66,11 @@ class Subsistema:
 
     def recibir_cliente(self, cliente):
         self.clientes.append(cliente)
+        self.cantidad_total_clientes += 1
         
         if len(self.clientes) == 1:
             self.calcular_proxima_salida()  
-            self.cantidad_total_clientes += 1
+            #self.cantidad_total_clientes += 1
 
             if self.comienzo_tiempo_ocioso != 0:
                 self.acumular_tiempo_ocioso()
