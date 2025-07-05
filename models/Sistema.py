@@ -138,7 +138,7 @@ class Sistema:
             promedio_espera = 0
             promedio_atencion = 0
 
-        tiempo_ocioso = self.hallar_porcentaje_tiempo_ocioso()
+        tiempo_ocioso = self.hallar_porcentaje_tiempo_ocioso() / len(self.subsistemas)
         arrepentidos = self.hallar_porcentaje_arrepentidos()
        
         
