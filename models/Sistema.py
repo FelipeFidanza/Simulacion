@@ -97,20 +97,20 @@ class Sistema:
         sumatoria_permanencia_sistema = 0
         sumatoria_atencion_sistema = 0
         sumatoria_tiempo_ocioso_sistema = 0
+        sumatoria_espera_sistema = 0
 
         for indice, subsistema in enumerate(self.subsistemas):
             clientes_atendidos = 0
             sumatoria_permanencia = 0
             sumatoria_atencion = 0
-            sumatoria_espera_sistema = 0
 
             clientes_atendidos += subsistema.clientes_atendidos
             sumatoria_permanencia += subsistema.sumatoria_tiempo_permanencia
             sumatoria_atencion += subsistema.sumatoria_tiempo_atencion
             sumatoria_tiempo_ocioso_sistema += subsistema.sumatoria_tiempo_ocioso
-            sumatoria_espera = sumatoria_permanencia - sumatoria_atencion
+            sumatoria_espera = subsistema.promedio_tiempo_espera
             print("Sumatoria de permanencia: ", sumatoria_permanencia, "sumatoria de atencion: ", sumatoria_atencion)
-            
+
 
             datos = [
             ["Cantidad de clientes atendidos en el subsistema", subsistema.clientes_atendidos],
