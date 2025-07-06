@@ -100,14 +100,9 @@ class Sistema:
         sumatoria_espera_sistema = 0
 
         for indice, subsistema in enumerate(self.subsistemas):
-            clientes_atendidos = 0
-            sumatoria_permanencia = 0
-            sumatoria_atencion = 0
-
-            clientes_atendidos += subsistema.clientes_atendidos
-            sumatoria_permanencia += subsistema.sumatoria_tiempo_permanencia
-            sumatoria_atencion += subsistema.sumatoria_tiempo_atencion
-            sumatoria_tiempo_ocioso_sistema += subsistema.sumatoria_tiempo_ocioso
+            clientes_atendidos = subsistema.clientes_atendidos
+            sumatoria_permanencia = subsistema.sumatoria_tiempo_atencion + subsistema.sumatoria_tiempo_espera
+            sumatoria_atencion = subsistema.sumatoria_tiempo_atencion
             sumatoria_espera = subsistema.promedio_tiempo_espera
             print("Sumatoria de permanencia: ", sumatoria_permanencia, "sumatoria de atencion: ", sumatoria_atencion)
 
@@ -122,6 +117,7 @@ class Sistema:
 
             print(tabulate(datos, headers=[f'Subsistema {indice + 1}', "Valor"], tablefmt="fancy_grid"))
 
+            sumatoria_tiempo_ocioso_sistema += subsistema.sumatoria_tiempo_ocioso
             clientes_atendidos_sistema += clientes_atendidos
             sumatoria_permanencia_sistema += sumatoria_permanencia
             sumatoria_atencion_sistema += sumatoria_atencion
