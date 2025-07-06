@@ -114,24 +114,24 @@ class Sistema:
 
             datos = [
             ["Cantidad de clientes atendidos en el subsistema", subsistema.clientes_atendidos],
-            ["Promedio del tiempo de permanencia en el subsistema", subsistema.promedio_tiempo_permanencia],
-            ["Promedio del tiempo de espera en el subsistema", subsistema.promedio_tiempo_espera],
-            ["Promedio del tiempo de atención en el subsistema", subsistema.promedio_tiempo_atencion],
+            ["Promedio del tiempo de permanencia en el subsistema", subsistema.promedio_tiempo_permanencia], 
+            ["Promedio del tiempo de espera en el subsistema", subsistema.promedio_tiempo_espera],           
+            ["Promedio del tiempo de atención en el subsistema", subsistema.promedio_tiempo_atencion], 
             ["Porcentaje de tiempo ocioso del subsistema", subsistema.sumatoria_tiempo_ocioso * 100 / self.tiempo_final],
             ]
 
             print(tabulate(datos, headers=[f'Subsistema {indice + 1}', "Valor"], tablefmt="fancy_grid"))
 
             clientes_atendidos_sistema += clientes_atendidos
-            sumatoria_permanencia_sistema += sumatoria_permanencia
+            sumatoria_permanencia_sistema += sumatoria_atencion
             sumatoria_atencion_sistema += sumatoria_atencion
-            sumatoria_espera_sistema += sumatoria_espera
+            sumatoria_atencion_sistema += sumatoria_espera
 
         print("Sumatoria de permanencia: ", sumatoria_permanencia_sistema, "sumatoria de atencion: ", sumatoria_atencion_sistema)
 
         if clientes_atendidos > 0:
             promedio_permanencia_sistema = sumatoria_permanencia_sistema / clientes_atendidos_sistema
-            promedio_espera = sumatoria_espera_sistema / len(self.subsistemas)
+            promedio_espera = sumatoria_espera_sistema / clientes_atendidos_sistema
             promedio_atencion = sumatoria_atencion_sistema / clientes_atendidos_sistema
         else:
             promedio_permanencia_sistema = 0
