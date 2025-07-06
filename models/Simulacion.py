@@ -60,11 +60,12 @@ class Simulacion:
 
     def iniciar_simulacion(self):
         datos_x_corrida = int(len(self.lector.intervalos_arribo)/self.cant_corridas)
+        print(f"\nCantidad de datos por corrida: {datos_x_corrida}")
         datos = [
             ["Cantidad de corridas", self.cant_corridas],
             ["Cantidad de servidores", self.cant_servidores],
             ["Tiempo total en segundos", 14400],
-            ["Tiempo de arrepentimiento", 500],
+            ["Tiempo de arrepentimiento", 300],
     
         ]
 

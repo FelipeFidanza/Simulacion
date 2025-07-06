@@ -15,7 +15,7 @@ class Sistema:
         self,
         subsistemas,
         tiempo_final=14400,
-        tiempo_arrepentimiento=600,
+        tiempo_arrepentimiento=300,
     ):
         self.subsistemas = subsistemas
         self.tiempo = 0
@@ -112,7 +112,6 @@ class Sistema:
             sumatoria_espera = subsistema.promedio_tiempo_espera
   
 
-
             # datos = [
             # ["Cantidad de clientes atendidos en el subsistema", subsistema.clientes_atendidos],
             # ["Promedio del tiempo de permanencia en el subsistema", subsistema.promedio_tiempo_permanencia],
@@ -129,14 +128,14 @@ class Sistema:
             sumatoria_atencion_sistema += sumatoria_atencion
             sumatoria_espera_sistema += sumatoria_espera
 
-        if clientes_atendidos > 0:
-            promedio_permanencia_sistema = sumatoria_permanencia_sistema / clientes_atendidos_sistema
-            promedio_espera = sumatoria_espera_sistema / len(self.subsistemas)
-            promedio_atencion = sumatoria_atencion_sistema / clientes_atendidos_sistema
-        else:
-            promedio_permanencia_sistema = 0
-            promedio_espera = 0
-            promedio_atencion = 0
+        # if clientes_atendidos > 0:
+        promedio_permanencia_sistema = sumatoria_permanencia_sistema / clientes_atendidos_sistema
+        promedio_espera = sumatoria_espera_sistema / len(self.subsistemas)
+        promedio_atencion = sumatoria_atencion_sistema / clientes_atendidos_sistema
+        # else:
+        #     promedio_permanencia_sistema = 0
+        #     promedio_espera = 0
+        #     promedio_atencion = 0
 
         tiempo_ocioso = self.hallar_porcentaje_tiempo_ocioso() / len(self.subsistemas)
         arrepentidos = self.hallar_porcentaje_arrepentidos()
