@@ -15,7 +15,7 @@ class Sistema:
         self,
         subsistemas,
         tiempo_final=14400,
-        tiempo_arrepentimiento=300,
+        tiempo_arrepentimiento=600,
     ):
         self.subsistemas = subsistemas
         self.tiempo = 0
