@@ -22,8 +22,6 @@ class Sistema:
         self.tiempo_proxima_llegada = 0
         self.tiempo_proxima_salida = float('inf')
         self.tiempo_arrepentimiento = tiempo_arrepentimiento
-        self.mu = tiempo_final * len(self.subsistemas) / 300
-        self.lamda = 300 / tiempo_final
         self.tiempo_final = tiempo_final
 
     def buscar_fila_mas_corta(self) -> Subsistema:
