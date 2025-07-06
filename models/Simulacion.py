@@ -22,8 +22,7 @@ class Simulacion:
         sistema.subsistemas = subsistemas
 
         [intervalo, tiempo_atencion] = self.lector.obtener_siguiente()               
-        sistema.obtener_proxima_llegada(intervalo) 
-
+        sistema.obtener_proxima_llegada(intervalo)
       
         while sistema.tiempo < sistema.tiempo_final:
             if (datos_x_corrida > 0 or sistema.hay_clientes_en_sistema()):
@@ -54,23 +53,25 @@ class Simulacion:
                 for subsistema in sistema.subsistemas:
                     subsistema.acumular_tiempo_ocioso()
 
-        datos = [
-            ["Cantidad de corridas", self.cant_corridas],
-            ["Cantidad de servidores", self.cant_servidores],
-            ["Tiempo total en segundos", sistema.tiempo_final],
-            ["Tiempo de arrepentimiento", sistema.tiempo_arrepentimiento],
-    
-        ]
-
-        print(tabulate(datos, headers=[f'Datos de inicialización', "Valor"], tablefmt="fancy_grid"))
+        
 
         sistema.imprimir_resultados(nro_corrida)
 
 
     def iniciar_simulacion(self):
         datos_x_corrida = int(len(self.lector.intervalos_arribo)/self.cant_corridas)
+        datos = [
+            ["Cantidad de corridas", self.cant_corridas],
+            ["Cantidad de servidores", self.cant_servidores],
+            ["Tiempo total en segundos", 14400],
+            ["Tiempo de arrepentimiento", 500],
+    
+        ]
+
+        print(tabulate(datos, headers=[f'Datos de inicialización', "Valor"], tablefmt="fancy_grid")) 
         for i in range(self.cant_corridas):
             self.iniciar_corrida(datos_x_corrida, i)
+            input(f"\nCorrida {i + 1} finalizada. Presioná Enter para continuar...")
 
 
 

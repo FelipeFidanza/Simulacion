@@ -75,6 +75,13 @@ class Sistema:
         if self.tiempo == 0:
             return 0
         return tiempo_oscioso_total * 100 / self.tiempo_final
+    
+    def segundos_a_hhmmss(self, segundos):
+        segundos = int(segundos)
+        horas = segundos // 3600
+        minutos = (segundos % 3600) // 60
+        segundos_restantes = segundos % 60
+        return f"{horas:02}:{minutos:02}:{segundos_restantes:02}"
 
 
     @property
@@ -92,6 +99,7 @@ class Sistema:
             return 0
         return self.cant_arrepentidos * 100 / clientes_totales
 
+
     def imprimir_resultados(self, nro_corrida):
         clientes_atendidos_sistema = 0
         sumatoria_permanencia_sistema = 0
@@ -104,26 +112,24 @@ class Sistema:
             sumatoria_permanencia = subsistema.sumatoria_tiempo_atencion + subsistema.sumatoria_tiempo_espera
             sumatoria_atencion = subsistema.sumatoria_tiempo_atencion
             sumatoria_espera = subsistema.promedio_tiempo_espera
-            print("Sumatoria de permanencia: ", sumatoria_permanencia, "sumatoria de atencion: ", sumatoria_atencion)
+  
 
 
-            datos = [
-            ["Cantidad de clientes atendidos en el subsistema", subsistema.clientes_atendidos],
-            ["Promedio del tiempo de permanencia en el subsistema", subsistema.promedio_tiempo_permanencia],
-            ["Promedio del tiempo de espera en el subsistema", subsistema.promedio_tiempo_espera],
-            ["Promedio del tiempo de atención en el subsistema", subsistema.promedio_tiempo_atencion],
-            ["Porcentaje de tiempo ocioso del subsistema", subsistema.sumatoria_tiempo_ocioso * 100 / self.tiempo_final],
-            ]
+            # datos = [
+            # ["Cantidad de clientes atendidos en el subsistema", subsistema.clientes_atendidos],
+            # ["Promedio del tiempo de permanencia en el subsistema", subsistema.promedio_tiempo_permanencia],
+            # ["Promedio del tiempo de espera en el subsistema", subsistema.promedio_tiempo_espera],
+            # ["Promedio del tiempo de atención en el subsistema", subsistema.promedio_tiempo_atencion],
+            # ["Porcentaje de tiempo ocioso del subsistema", subsistema.sumatoria_tiempo_ocioso * 100 / self.tiempo_final],
+            # ]
 
-            print(tabulate(datos, headers=[f'Subsistema {indice + 1}', "Valor"], tablefmt="fancy_grid"))
+            # print(tabulate(datos, headers=[f'Subsistema {indice + 1}', "Valor"], tablefmt="fancy_grid"))
 
             sumatoria_tiempo_ocioso_sistema += subsistema.sumatoria_tiempo_ocioso
             clientes_atendidos_sistema += clientes_atendidos
             sumatoria_permanencia_sistema += sumatoria_permanencia
             sumatoria_atencion_sistema += sumatoria_atencion
             sumatoria_espera_sistema += sumatoria_espera
-
-        print("Sumatoria de permanencia: ", sumatoria_permanencia_sistema, "sumatoria de atencion: ", sumatoria_atencion_sistema)
 
         if clientes_atendidos > 0:
             promedio_permanencia_sistema = sumatoria_permanencia_sistema / clientes_atendidos_sistema
@@ -139,13 +145,13 @@ class Sistema:
        
         
         datos = [
-            ["Promedio del tiempo de permanencia en el sistema", promedio_permanencia_sistema],
-            ["Promedio del tiempo de espera en el sistema", promedio_espera],
-            ["Promedio del tiempo de atención en el sistema", promedio_atencion],
-            ["Porcentaje de tiempo ocioso del sistema", tiempo_ocioso],
+            ["Promedio del tiempo de permanencia en el sistema", self.segundos_a_hhmmss(promedio_permanencia_sistema)],
+            ["Promedio del tiempo de espera en el sistema", self.segundos_a_hhmmss(promedio_espera)],
+            ["Promedio del tiempo de atención en el sistema", self.segundos_a_hhmmss(promedio_atencion)],
+            ["Porcentaje de tiempo ocioso del sistema", str(round(tiempo_ocioso,2)) + "%"],
             ["Cantidad de clientes atendidos en el sistema", clientes_atendidos_sistema],
             ["Cantidad de clientes arrepentidos en el sistema", self.cant_arrepentidos],  
-            ["Porcentaje de personas arrepentidas en el sistema", arrepentidos],
+            ["Porcentaje de personas arrepentidas en el sistema", str(round(arrepentidos,2)) + "%"],
         ]
 
         print(tabulate(datos, headers=[f'Corrida {nro_corrida + 1}', "Valor"], tablefmt="fancy_grid"))
