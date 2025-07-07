@@ -9,17 +9,18 @@ class Subsistema:
         self,
         sistema
     ):
+        self.sistema = sistema
         self.clientes = []
         self.comienzo_tiempo_ocioso = 0
         self.cantidad_total_clientes = 0
         self.tiempo_proxima_salida = float('inf')
-        self.sumatoria_tiempo_ocioso = 0
+        self.sumatoria_tiempo_ocioso = self.sistema.tiempo_final
         self.sumatoria_tiempo_permanencia = 0
         self.sumatoria_tiempo_atencion = 0
         self.sumatoria_tiempo_espera = 0
         self.cantidad_arrepentidos = 0
 
-        self.sistema = sistema
+       
 
     def finalizar_atencion(self):
         if self.clientes:
@@ -71,14 +72,16 @@ class Subsistema:
             self.calcular_proxima_salida()  
             #self.cantidad_total_clientes += 1
 
-            if self.comienzo_tiempo_ocioso != 0:
-                self.acumular_tiempo_ocioso()
-                self.comienzo_tiempo_ocioso = 0   
+            self.acumular_tiempo_ocioso()
+            # self.comienzo_tiempo_ocioso = 0   
                 
         else:
             self.tratar_arrepentimiento()
 
     def acumular_tiempo_ocioso(self):
+        if self.sumatoria_tiempo_ocioso == self.sistema.tiempo_final:
+            self.sumatoria_tiempo_ocioso = 0
+
         self.sumatoria_tiempo_ocioso += self.sistema.tiempo - self.comienzo_tiempo_ocioso
 
    

@@ -82,7 +82,7 @@ class Simulacion:
             ["Cantidad de corridas", self.cant_corridas],
             ["Cantidad de servidores", self.cant_servidores],
             ["Tiempo total en segundos", 14400],
-            ["Tiempo de arrepentimiento", 480],
+            ["Tiempo de arrepentimiento", 300],
     
         ]
 
@@ -90,10 +90,10 @@ class Simulacion:
         for i in range(self.cant_corridas):
             self.iniciar_corrida(datos_x_corrida, i)
             input(f"\nCorrida {i + 1} finalizada. Presioná Enter para continuar...")
-        # print()
+
         for i in range(len(self.datos_globales)):
             self.datos_globales[i] = self.datos_globales[i] / self.cant_corridas
-        # print(self.datos_globales)
+
 
         datos = [
             ["Tiempo de permanencia", segundos_a_hhmmss(self.datos_globales[0])],
@@ -101,12 +101,12 @@ class Simulacion:
             ["Tiempo de atención", segundos_a_hhmmss(self.datos_globales[2])],
             ["Tiempo ocioso", str(round(self.datos_globales[3],2)) + "%"],
             ["Clientes atendidos", str(int(self.datos_globales[4]))],
-            # ["Clientes arrepentidos", str(int(self.datos_globales[5]))],  
+         
             ["Porcentaje de arrepentidos", str(round(self.datos_globales[6],2)) + "%"],
         ]
 
         print(tabulate(datos, headers=[f'Resultados de la simulación (promedios)', "Valor"], tablefmt="fancy_grid"))
-        # print(json.dumps(self.resultados, indent=2, ensure_ascii=False))
+
         armar_grafico(self.resultados)
 
 

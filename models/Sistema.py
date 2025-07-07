@@ -66,16 +66,9 @@ class Sistema:
         fila_a_ingresar.recibir_cliente(cliente)
       
 
-    def hallar_porcentaje_tiempo_ocioso(self):
-        tiempo_oscioso_total = 0
-        for subsistema in self.subsistemas:
-            tiempo_oscioso_total += subsistema.sumatoria_tiempo_ocioso
-        if self.tiempo == 0:
-            return 0
-        return tiempo_oscioso_total * 100 / self.tiempo_final
+    def hallar_porcentaje_tiempo_ocioso(self, sumatoria_tiempo_ocioso_sistema):
+        return  sumatoria_tiempo_ocioso_sistema * 100 / self.tiempo_final
     
-
-
 
     @property
     def cant_arrepentidos(self):
@@ -105,34 +98,32 @@ class Sistema:
             sumatoria_permanencia = subsistema.sumatoria_tiempo_atencion + subsistema.sumatoria_tiempo_espera
             sumatoria_atencion = subsistema.sumatoria_tiempo_atencion
             sumatoria_espera = subsistema.promedio_tiempo_espera
-  
 
-            # datos = [
-            # ["Cantidad de clientes atendidos en el subsistema", subsistema.clientes_atendidos],
-            # ["Promedio del tiempo de permanencia en el subsistema", subsistema.promedio_tiempo_permanencia],
-            # ["Promedio del tiempo de espera en el subsistema", subsistema.promedio_tiempo_espera],
-            # ["Promedio del tiempo de atención en el subsistema", subsistema.promedio_tiempo_atencion],
-            # ["Porcentaje de tiempo ocioso del subsistema", subsistema.sumatoria_tiempo_ocioso * 100 / self.tiempo_final],
-            # ]
-
-            # print(tabulate(datos, headers=[f'Subsistema {indice + 1}', "Valor"], tablefmt="fancy_grid"))
-
+           
             sumatoria_tiempo_ocioso_sistema += subsistema.sumatoria_tiempo_ocioso
+
             clientes_atendidos_sistema += clientes_atendidos
             sumatoria_permanencia_sistema += sumatoria_permanencia
             sumatoria_atencion_sistema += sumatoria_atencion
             sumatoria_espera_sistema += sumatoria_espera
 
-        # if clientes_atendidos > 0:
+
+            datos = [
+                ["Cantidad de clientes atendidos en el subsistema", subsistema.clientes_atendidos],
+                ["Promedio del tiempo de permanencia en el subsistema", subsistema.promedio_tiempo_permanencia],
+                ["Promedio del tiempo de espera en el subsistema", subsistema.promedio_tiempo_espera],
+                ["Promedio del tiempo de atención en el subsistema", subsistema.promedio_tiempo_atencion],
+                ["Porcentaje de tiempo ocioso del subsistema", subsistema.sumatoria_tiempo_ocioso * 100 / self.tiempo_final],
+                ]
+
+            print(tabulate(datos, headers=[f'Subsistema {indice + 1}', "Valor"], tablefmt="fancy_grid"))
+
         promedio_permanencia_sistema = sumatoria_permanencia_sistema / clientes_atendidos_sistema
         promedio_espera = sumatoria_espera_sistema / len(self.subsistemas)
         promedio_atencion = sumatoria_atencion_sistema / clientes_atendidos_sistema
-        # else:
-        #     promedio_permanencia_sistema = 0
-        #     promedio_espera = 0
-        #     promedio_atencion = 0
+    
 
-        tiempo_ocioso = self.hallar_porcentaje_tiempo_ocioso() / len(self.subsistemas)
+        tiempo_ocioso = self.hallar_porcentaje_tiempo_ocioso(sumatoria_tiempo_ocioso_sistema) / len(self.subsistemas)
         arrepentidos = self.hallar_porcentaje_arrepentidos()
        
         
