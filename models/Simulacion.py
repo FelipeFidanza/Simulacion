@@ -1,8 +1,8 @@
 from tabulate import tabulate
-from LectorCSV import LectorCSV
-from Sistema import Sistema
-from Subsistema import Subsistema 
-
+from models.LectorCSV import LectorCSV
+from models.Sistema import Sistema
+from models.Subsistema import Subsistema 
+from utils import segundos_a_hhmmss
 
 class Simulacion:
     def __init__(
@@ -75,13 +75,24 @@ class Simulacion:
         for i in range(self.cant_corridas):
             self.iniciar_corrida(datos_x_corrida, i)
             input(f"\nCorrida {i + 1} finalizada. Presioná Enter para continuar...")
-        print()
-        print(self.datos_globales)
+        # print()
+        for i in range(len(self.datos_globales)):
+            self.datos_globales[i] = self.datos_globales[i] / self.cant_corridas
+        # print(self.datos_globales)
+
+        datos = [
+            ["Promedio del tiempo de permanencia en la simulación", segundos_a_hhmmss(self.datos_globales[0])],
+            ["Promedio del tiempo de espera en la simulación", segundos_a_hhmmss(self.datos_globales[1])],
+            ["Promedio del tiempo de atención en la simulación", segundos_a_hhmmss(self.datos_globales[2])],
+            ["Porcentaje de tiempo ocioso en la simulación", str(round(self.datos_globales[3],2)) + "%"],
+            ["Cantidad de clientes atendidos en la simulación", self.datos_globales[4]],
+            ["Cantidad de clientes arrepentidos en la simulación", self.datos_globales[5]],  
+            ["Porcentaje de personas arrepentidas en la simulación", str(round(self.datos_globales[6],2)) + "%"],
+        ]
+
+        print(tabulate(datos, headers=[f'Resultados de la simulación', "Valor"], tablefmt="fancy_grid"))
 
 
 
-if __name__ == "__main__":
-    lector = LectorCSV("variables.csv")
-    sim = Simulacion(cant_corridas=20, cant_servidores=5, lector=lector)
-    sim.iniciar_simulacion()
+
 
