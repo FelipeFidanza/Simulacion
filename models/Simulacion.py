@@ -2,7 +2,8 @@ from tabulate import tabulate
 from models.LectorCSV import LectorCSV
 from models.Sistema import Sistema
 from models.Subsistema import Subsistema 
-from utils import segundos_a_hhmmss
+from utils import segundos_a_hhmmss, armar_grafico
+import json
 
 class Simulacion:
     def __init__(
@@ -15,6 +16,7 @@ class Simulacion:
         self.cant_servidores = cant_servidores
         self.lector = lector
         self.datos_globales = [0, 0, 0, 0, 0, 0, 0] # permanencia | espera | atencion | ocioso | atendidos | arrepentidos | arrepentidos%
+        self.resultados = []
 
     def iniciar_corrida(self, datos_x_corrida, nro_corrida):
         sistema = Sistema(subsistemas=[])
@@ -57,6 +59,19 @@ class Simulacion:
         
 
         resultado = sistema.imprimir_resultados(nro_corrida)
+        self.resultados.append(
+            {
+                "corrida" : {
+                    "Tiempo de permanencia": resultado[0],
+                    "Tiempo de espera": resultado[1],
+                    "Tiempo de atención": resultado[2],
+                    "Porcentaje de tiempo ocioso": resultado[3],
+                    "Clientes atendidos": resultado[4],
+                    "Clientes arrepentidos": resultado[5],
+                    "Porcentaje de arrepentidos": resultado[6],
+                }
+            }
+        )
         self.datos_globales = [x + y for x, y in zip(self.datos_globales, resultado)]
 
 
@@ -84,13 +99,15 @@ class Simulacion:
             ["Tiempo de permanencia", segundos_a_hhmmss(self.datos_globales[0])],
             ["Tiempo de espera", segundos_a_hhmmss(self.datos_globales[1])],
             ["Tiempo de atención", segundos_a_hhmmss(self.datos_globales[2])],
-            ["Tiempo ocioso", segundos_a_hhmmss(self.datos_globales[3])],
+            ["Tiempo ocioso", str(round(self.datos_globales[3],2)) + "%"],
             ["Clientes atendidos", str(int(self.datos_globales[4]))],
-            ["Clientes arrepentidos", str(int(self.datos_globales[5]))],  
-            ["Porcentaje de arrepentidos", str(int(self.datos_globales[6])) + "%"],
+            # ["Clientes arrepentidos", str(int(self.datos_globales[5]))],  
+            ["Porcentaje de arrepentidos", str(round(self.datos_globales[6],2)) + "%"],
         ]
 
         print(tabulate(datos, headers=[f'Resultados de la simulación (promedios)', "Valor"], tablefmt="fancy_grid"))
+        # print(json.dumps(self.resultados, indent=2, ensure_ascii=False))
+        armar_grafico(self.resultados)
 
 
 
