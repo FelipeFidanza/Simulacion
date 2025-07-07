@@ -14,6 +14,7 @@ class Simulacion:
         self.cant_corridas = cant_corridas
         self.cant_servidores = cant_servidores
         self.lector = lector
+        self.datos_globales = [0, 0, 0, 0, 0, 0, 0] # permanencia | espera | atencion | ocioso | atendidos | arrepentidos | arrepentidos%
 
     def iniciar_corrida(self, datos_x_corrida, nro_corrida):
         sistema = Sistema(subsistemas=[])
@@ -55,7 +56,8 @@ class Simulacion:
 
         
 
-        sistema.imprimir_resultados(nro_corrida)
+        resultado = sistema.imprimir_resultados(nro_corrida)
+        self.datos_globales = [x + y for x, y in zip(self.datos_globales, resultado)]
 
 
     def iniciar_simulacion(self):
@@ -73,6 +75,8 @@ class Simulacion:
         for i in range(self.cant_corridas):
             self.iniciar_corrida(datos_x_corrida, i)
             input(f"\nCorrida {i + 1} finalizada. Presioná Enter para continuar...")
+        print()
+        print(self.datos_globales)
 
 
 

@@ -154,4 +154,13 @@ class Sistema:
         print(tabulate(datos, headers=[f'Corrida {nro_corrida + 1}', "Valor"], tablefmt="fancy_grid"))
 
 
+        return [promedio_permanencia_sistema, 
+                promedio_espera, 
+                promedio_atencion, 
+                round(tiempo_ocioso,2), 
+                clientes_atendidos_sistema, 
+                self.cant_arrepentidos, 
+                round(arrepentidos,2)
+                ]
+
     
