@@ -1,5 +1,3 @@
-from Cliente import Cliente
-import math
 
 class Subsistema:
     """

@@ -1,7 +1,7 @@
-from Cliente import Cliente
-from Subsistema import Subsistema
+from models.Cliente import Cliente
+from models.Subsistema import Subsistema
 from tabulate import tabulate
-
+from utils import segundos_a_hhmmss
 
 class Sistema:
     """
@@ -74,12 +74,7 @@ class Sistema:
             return 0
         return tiempo_oscioso_total * 100 / self.tiempo_final
     
-    def segundos_a_hhmmss(self, segundos):
-        segundos = int(segundos)
-        horas = segundos // 3600
-        minutos = (segundos % 3600) // 60
-        segundos_restantes = segundos % 60
-        return f"{horas:02}:{minutos:02}:{segundos_restantes:02}"
+
 
 
     @property
@@ -142,9 +137,9 @@ class Sistema:
        
         
         datos = [
-            ["Promedio del tiempo de permanencia en el sistema", self.segundos_a_hhmmss(promedio_permanencia_sistema)],
-            ["Promedio del tiempo de espera en el sistema", self.segundos_a_hhmmss(promedio_espera)],
-            ["Promedio del tiempo de atención en el sistema", self.segundos_a_hhmmss(promedio_atencion)],
+            ["Promedio del tiempo de permanencia en el sistema", segundos_a_hhmmss(promedio_permanencia_sistema)],
+            ["Promedio del tiempo de espera en el sistema", segundos_a_hhmmss(promedio_espera)],
+            ["Promedio del tiempo de atención en el sistema", segundos_a_hhmmss(promedio_atencion)],
             ["Porcentaje de tiempo ocioso del sistema", str(round(tiempo_ocioso,2)) + "%"],
             ["Cantidad de clientes atendidos en el sistema", clientes_atendidos_sistema],
             ["Cantidad de clientes arrepentidos en el sistema", self.cant_arrepentidos],  
