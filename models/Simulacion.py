@@ -81,16 +81,16 @@ class Simulacion:
         # print(self.datos_globales)
 
         datos = [
-            ["Promedio del tiempo de permanencia en la simulación", segundos_a_hhmmss(self.datos_globales[0])],
-            ["Promedio del tiempo de espera en la simulación", segundos_a_hhmmss(self.datos_globales[1])],
-            ["Promedio del tiempo de atención en la simulación", segundos_a_hhmmss(self.datos_globales[2])],
-            ["Porcentaje de tiempo ocioso en la simulación", str(round(self.datos_globales[3],2)) + "%"],
-            ["Cantidad de clientes atendidos en la simulación", self.datos_globales[4]],
-            ["Cantidad de clientes arrepentidos en la simulación", self.datos_globales[5]],  
-            ["Porcentaje de personas arrepentidas en la simulación", str(round(self.datos_globales[6],2)) + "%"],
+            ["Tiempo de permanencia", segundos_a_hhmmss(self.datos_globales[0])],
+            ["Tiempo de espera", segundos_a_hhmmss(self.datos_globales[1])],
+            ["Tiempo de atención", segundos_a_hhmmss(self.datos_globales[2])],
+            ["Tiempo ocioso", segundos_a_hhmmss(self.datos_globales[3])],
+            ["Clientes atendidos", str(int(self.datos_globales[4]))],
+            ["Clientes arrepentidos", str(int(self.datos_globales[5]))],  
+            ["Porcentaje de arrepentidos", str(int(self.datos_globales[6])) + "%"],
         ]
 
-        print(tabulate(datos, headers=[f'Resultados de la simulación', "Valor"], tablefmt="fancy_grid"))
+        print(tabulate(datos, headers=[f'Resultados de la simulación (promedios)', "Valor"], tablefmt="fancy_grid"))
 
 
 
