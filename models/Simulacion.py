@@ -89,7 +89,7 @@ class Simulacion:
         print(tabulate(datos, headers=[f'Datos de inicialización', "Valor"], tablefmt="fancy_grid")) 
         for i in range(self.cant_corridas):
             self.iniciar_corrida(datos_x_corrida, i)
-            input(f"\nCorrida {i + 1} finalizada. Presioná Enter para continuar...")
+            #input(f"\nCorrida {i + 1} finalizada. Presioná Enter para continuar...")
 
         for i in range(len(self.datos_globales)):
             self.datos_globales[i] = self.datos_globales[i] / self.cant_corridas
@@ -107,7 +107,7 @@ class Simulacion:
 
         print(tabulate(datos, headers=[f'Resultados de la simulación (promedios)', "Valor"], tablefmt="fancy_grid"))
 
-        armar_grafico(self.resultados)
+        # armar_grafico(self.resultados)
 
 
 

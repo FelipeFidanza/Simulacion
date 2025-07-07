@@ -7,3 +7,5 @@ if __name__ == "__main__":
         lector = LectorCSV("variables.csv")
         sim = Simulacion(cant_corridas=20, cant_servidores=i, lector=lector)
         sim.iniciar_simulacion()
+
+    input()
