@@ -1,11 +1,11 @@
 import matplotlib.pyplot as plt
 
 def segundos_a_hhmmss(segundos):
-    segundos = int(segundos)
-    horas = segundos // 3600
-    minutos = (segundos % 3600) // 60
-    segundos_restantes = segundos % 60
-    return f"{horas:02}:{minutos:02}:{segundos_restantes:02}"
+    horas = int(segundos) // 3600
+    minutos = (int(segundos) % 3600) // 60
+    segundos_enteros = int(segundos) % 60
+    centesimas = int(round((segundos - int(segundos)) * 100))
+    return f"{horas:02}:{minutos:02}:{segundos_enteros:02}.{centesimas:02}"
 
 def armar_grafico(resultados):
     dias = list(range(1, len(resultados) + 1))
