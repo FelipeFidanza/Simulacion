@@ -67,7 +67,7 @@ class Sistema:
       
 
     def hallar_porcentaje_tiempo_ocioso(self, sumatoria_tiempo_ocioso_sistema):
-        return  sumatoria_tiempo_ocioso_sistema * 100 / self.tiempo_final
+        return  (sumatoria_tiempo_ocioso_sistema * 100) / self.tiempo_final
     
 
     @property

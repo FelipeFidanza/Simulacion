@@ -70,10 +70,7 @@ class Subsistema:
         
         if len(self.clientes) == 1:
             self.calcular_proxima_salida()  
-            #self.cantidad_total_clientes += 1
-
-            self.acumular_tiempo_ocioso()
-            # self.comienzo_tiempo_ocioso = 0   
+            self.acumular_tiempo_ocioso()     
                 
         else:
             self.tratar_arrepentimiento()

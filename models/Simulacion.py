@@ -115,6 +115,7 @@ class Simulacion:
         ic_aten = calcular_ic_95(atenciones)
         ic_ocio = calcular_ic_95(ociosos)
         ic_arr = calcular_ic_95(arrepentidos)
+   
 
         # Mostrar en consola
         print("\nIntervalos de confianza al 95%:")
@@ -146,4 +147,8 @@ def calcular_ic_95(valores):
     s = np.std(valores, ddof=1)
     t_crit = t.ppf(0.975, df=n-1)  # 95% de confianza
     margen_error = t_crit * (s / np.sqrt(n))
-    return round(media - margen_error, 2), round(media + margen_error, 2)
+ 
+    inferior = max(media - margen_error, 0)
+    superior = media + margen_error
+    
+    return round(inferior, 2), round(superior, 2)
