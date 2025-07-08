@@ -1,12 +1,25 @@
 # -*- mode: python ; coding: utf-8 -*-
 
-
 a = Analysis(
     ['main.py'],
     pathex=[],
     binaries=[],
-    datas=[],
-    hiddenimports=[],
+    datas=[('variables.csv', '.')],  # Incluye el archivo CSV
+    hiddenimports=[
+        'models',
+        'models.LectorCSV',
+        'models.Simulacion', 
+        'models.Sistema',
+        'models.Subsistema',
+        'models.Cliente',
+        'utils',
+        'scipy',
+        'scipy.stats',
+        'numpy',
+        'matplotlib',
+        'matplotlib.pyplot',
+        'tabulate'
+    ],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -14,6 +27,7 @@ a = Analysis(
     noarchive=False,
     optimize=0,
 )
+
 pyz = PYZ(a.pure)
 
 exe = EXE(
@@ -22,7 +36,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='main',
+    name='simulacion',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,

@@ -23,4 +23,5 @@ if __name__ == "__main__":
         sim.iniciar_simulacion()
 
     input()
+    input("Presione Enter para salir...")
     
