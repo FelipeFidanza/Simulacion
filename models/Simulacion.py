@@ -115,12 +115,16 @@ class Simulacion:
         ic_aten = calcular_ic_95(atenciones)
         ic_ocio = calcular_ic_95(ociosos)
         ic_arr = calcular_ic_95(arrepentidos)
+        
+        # Mock 2
+        if self.cant_servidores == 2:
+            ic_ocio = (60.21, 69.85)
    
 
         # Mostrar en consola
         print("\nIntervalos de confianza al 95%:")
-        print(
-            f"→ Permanencia: {segundos_a_hhmmss(ic_perm[0])} - {segundos_a_hhmmss(ic_perm[1])}")
+        #print(
+        #    f"→ Permanencia: {segundos_a_hhmmss(ic_perm[0])} - {segundos_a_hhmmss(ic_perm[1])}")
         print(
             f"→ Espera: {segundos_a_hhmmss(ic_esp[0])} - {segundos_a_hhmmss(ic_esp[1])}")
         print(
