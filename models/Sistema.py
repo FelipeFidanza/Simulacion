@@ -1,5 +1,5 @@
-from models.Cliente import Cliente
-from models.Subsistema import Subsistema
+from .Cliente import Cliente
+from .Subsistema import Subsistema
 from tabulate import tabulate
 from utils import segundos_a_hhmmss
 

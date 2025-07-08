@@ -1,7 +1,7 @@
 from tabulate import tabulate
-from models.LectorCSV import LectorCSV
-from models.Sistema import Sistema
-from models.Subsistema import Subsistema 
+from .LectorCSV import LectorCSV
+from .Sistema import Sistema
+from .Subsistema import Subsistema 
 from utils import segundos_a_hhmmss, armar_grafico
 import json
 
