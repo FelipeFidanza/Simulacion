@@ -128,17 +128,17 @@ class Simulacion:
         print(f"→ Tiempo ocioso: {ic_ocio[0]}% - {ic_ocio[1]}%")
         print(f"→ Arrepentidos: {ic_arr[0]}% - {ic_arr[1]}%")
 
-        # datos = [
-        #     ["Tiempo de permanencia", segundos_a_hhmmss(self.datos_globales[0])],
-        #     ["Tiempo de espera", segundos_a_hhmmss(self.datos_globales[1])],
-        #     ["Tiempo de atención", segundos_a_hhmmss(self.datos_globales[2])],
-        #     ["Tiempo ocioso", str(round(self.datos_globales[3],2)) + "%"],
-        #     ["Clientes atendidos", str(int(self.datos_globales[4]))],
+        datos = [
+            ["Tiempo de permanencia", segundos_a_hhmmss(self.datos_globales[0])],
+            ["Tiempo de espera", segundos_a_hhmmss(self.datos_globales[1])],
+            ["Tiempo de atención", segundos_a_hhmmss(self.datos_globales[2])],
+            ["Tiempo ocioso", str(round(self.datos_globales[3],2)) + "%"],
+            ["Clientes atendidos", str(int(self.datos_globales[4]))],
 
-        #     ["Porcentaje de arrepentidos", str(round(self.datos_globales[6],2)) + "%"],
-        # ]
+            ["Porcentaje de arrepentidos", str(round(self.datos_globales[6],2)) + "%"],
+        ]
 
-        # print(tabulate(datos, headers=[f'Resultados de la simulación (promedios)', "Valor"], tablefmt="fancy_grid"))
+        print(tabulate(datos, headers=[f'Resultados de la simulación (promedios)', "Valor"], tablefmt="fancy_grid"))
 
 
 def calcular_ic_95(valores):

@@ -67,7 +67,7 @@ class Sistema:
       
 
     def hallar_porcentaje_tiempo_ocioso(self, sumatoria_tiempo_ocioso_sistema):
-        return  (sumatoria_tiempo_ocioso_sistema * 100) / self.tiempo_final
+        return  (sumatoria_tiempo_ocioso_sistema * 100) / (self.tiempo_final * len(self.subsistemas))
     
 
     @property
@@ -123,11 +123,11 @@ class Sistema:
         promedio_atencion = sumatoria_atencion_sistema / clientes_atendidos_sistema
     
 
-        tiempo_ocioso = self.hallar_porcentaje_tiempo_ocioso(sumatoria_tiempo_ocioso_sistema) / len(self.subsistemas)
+        tiempo_ocioso = self.hallar_porcentaje_tiempo_ocioso(sumatoria_tiempo_ocioso_sistema)
         arrepentidos = self.hallar_porcentaje_arrepentidos()
        
         
-        #datos = [
+        # datos = [
         #    ["Promedio del tiempo de permanencia en el sistema", segundos_a_hhmmss(promedio_permanencia_sistema)],
         #    ["Promedio del tiempo de espera en el sistema", segundos_a_hhmmss(promedio_espera)],
         #    ["Promedio del tiempo de atención en el sistema", segundos_a_hhmmss(promedio_atencion)],
@@ -135,9 +135,9 @@ class Sistema:
         #    ["Cantidad de clientes atendidos en el sistema", clientes_atendidos_sistema],
         #    ["Cantidad de clientes arrepentidos en el sistema", self.cant_arrepentidos],  
         #    ["Porcentaje de personas arrepentidas en el sistema", str(round(arrepentidos,2)) + "%"],
-        #]
+        # ]
 
-        #print(tabulate(datos, headers=[f'Corrida {nro_corrida + 1}', "Valor"], tablefmt="fancy_grid"))
+        # print(tabulate(datos, headers=[f'Corrida {nro_corrida + 1}', "Valor"], tablefmt="fancy_grid"))
 
 
         return [promedio_permanencia_sistema, 
