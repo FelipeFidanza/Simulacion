@@ -90,7 +90,7 @@ class Sistema:
         clientes_atendidos_sistema = 0
         sumatoria_permanencia_sistema = 0
         sumatoria_atencion_sistema = 0
-        sumatoria_tiempo_ocioso_sistema = 0
+        sumatoria_porcentaje_tiempo_ocioso_sistema = 0
         sumatoria_espera_sistema = 0
 
         for indice, subsistema in enumerate(self.subsistemas):
@@ -100,7 +100,7 @@ class Sistema:
             sumatoria_espera = subsistema.promedio_tiempo_espera
 
            
-            sumatoria_tiempo_ocioso_sistema += subsistema.sumatoria_tiempo_ocioso
+            sumatoria_porcentaje_tiempo_ocioso_sistema += self.hallar_porcentaje_tiempo_ocioso(subsistema.sumatoria_tiempo_ocioso)
 
             clientes_atendidos_sistema += clientes_atendidos
             sumatoria_permanencia_sistema += sumatoria_permanencia
@@ -123,7 +123,7 @@ class Sistema:
         promedio_atencion = sumatoria_atencion_sistema / clientes_atendidos_sistema
     
 
-        tiempo_ocioso = self.hallar_porcentaje_tiempo_ocioso(sumatoria_tiempo_ocioso_sistema) / len(self.subsistemas)
+        tiempo_ocioso = sumatoria_porcentaje_tiempo_ocioso_sistema / len(self.subsistemas)
         arrepentidos = self.hallar_porcentaje_arrepentidos()
        
         

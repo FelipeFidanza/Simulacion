@@ -5,7 +5,7 @@ if __name__ == "__main__":
 
     for i in range(5, 0, -1):
         lector = LectorCSV("variables.csv")
-        sim = Simulacion(cant_corridas=400, cant_servidores=i, lector=lector)
+        sim = Simulacion(cant_corridas=25000, cant_servidores=i, lector=lector)
         sim.iniciar_simulacion()
 
     input()
